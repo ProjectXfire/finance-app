@@ -1,0 +1,21 @@
+.auth-header {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-header h1,
+.auth-header p {
+  text-align: center;
+}
+
+.auth-header h1 {
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+.auth-header p {
+  opacity: 0.8;
+}
