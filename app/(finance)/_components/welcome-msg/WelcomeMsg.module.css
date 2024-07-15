@@ -1,0 +1,28 @@
+.welcome-msg {
+  margin-top: 40px;
+}
+
+.welcome-msg__title {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.welcome-msg__subtitle {
+  opacity: 0.7;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+@media (width > 550px) {
+  .welcome-msg__title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: rgb(217, 222, 230);
+  }
+
+  .welcome-msg__subtitle {
+    opacity: 0.7;
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+}

@@ -2,6 +2,7 @@ import styles from './Loading.module.css';
 
 interface Props {
   color?: string;
+  size?: number;
 }
 
 function Loading({ color }: Props): JSX.Element {
