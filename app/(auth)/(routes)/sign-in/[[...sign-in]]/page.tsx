@@ -2,7 +2,7 @@ import { ClerkLoaded, ClerkLoading, SignIn } from '@clerk/nextjs';
 import { AuthHeader } from '@/app/(auth)/_components';
 import { Loading } from '@/shared/components';
 
-function SignInPage() {
+function SignInPage(): JSX.Element {
   return (
     <>
       <AuthHeader

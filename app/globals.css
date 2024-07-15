@@ -4,8 +4,12 @@
 
 @layer base {
   :root {
-    --background: #ffffff;
-    --foreground: 240, 59%, 19%;
+    --background: 222, 0%, 94%, 1; /* changed */
+    --foreground: 240, 59%, 19%; /* changed */
+    --bg-gradient: linear-gradient(180deg, rgba(30, 118, 209, 1) 10%, rgba(240, 240, 240, 1) 100%);
+    --border-color: rgb(15, 29, 58);
+    --button-hover: rgba(138, 153, 178, 0.3);
+    --text-hover: rgb(226, 229, 238);
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
@@ -16,24 +20,29 @@
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
+    /*--accent: 210 40% 96.1%;*/
+    --accent: 218, 20%, 62%, 0.3;
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
   }
 
   .dark {
-    --background: #091a3f;
-    --foreground: 238, 29%, 57%;
+    --background: 227, 91%, 5%, 1; /* changed */
+    --foreground: 238, 29%, 70%; /* changed */
+    --bg-gradient: linear-gradient(180deg, rgba(30, 118, 209, 1) 0%, rgba(1, 7, 24, 1) 100%);
+    --border-color: rgb(121, 141, 185);
+    --button-hover: rgba(29, 40, 57, 1);
+    --text-hover: rgb(226, 229, 238);
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
