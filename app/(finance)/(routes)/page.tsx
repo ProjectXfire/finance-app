@@ -1,5 +1,5 @@
-import { Button } from '@/shared/components';
+import { DashboardContainer } from '../_components';
 
 export default function DashboardPage(): JSX.Element {
-  return <section>Dashboard</section>;
+  return <DashboardContainer />;
 }
