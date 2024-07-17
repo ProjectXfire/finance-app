@@ -15,8 +15,8 @@ export function useCreateAccount() {
       toast.success('Account created');
       queryClient.invalidateQueries({ queryKey: ['accounts'] });
     },
-    onError: () => {
-      toast.success('Failed to create account');
+    onError: (error) => {
+      toast.success(error.message);
     },
   });
   return mutation;
@@ -28,7 +28,7 @@ async function createAccount(payload: CreateAccountDto): Promise<Account> {
   if (!res.ok) {
     const { error } = await res.json();
     if (error) throw new Error(error);
-    throw new Error('Error on fetch data');
+    throw new Error('Connection error');
   }
   const { data } = await res.json();
   return data;
