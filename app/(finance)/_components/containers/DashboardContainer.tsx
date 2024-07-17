@@ -1,24 +1,21 @@
 'use client';
 
-import { useGetAccounts } from '@/core/finance/services/client';
+import { Button } from '@/shared/components';
+import { useAccountSheet } from '../../_states';
+import { NewAccountForm } from '..';
 
 function DashboardContainer(): JSX.Element {
-  const { data, error, isLoading } = useGetAccounts();
+  const open = useAccountSheet((s) => s.open);
+  const setComponent = useAccountSheet((s) => s.setComponent);
 
-  if (error)
-    return (
-      <section>
-        <p>{error.message}</p>
-      </section>
-    );
+  const onOpenSheetForm = () => {
+    open();
+    setComponent(<NewAccountForm />);
+  };
 
   return (
     <section>
-      <ul>
-        {data?.map((acc) => (
-          <li key={acc.id}>{acc.name}</li>
-        ))}
-      </ul>
+      <Button onClick={onOpenSheetForm}>Add an account</Button>
     </section>
   );
 }
