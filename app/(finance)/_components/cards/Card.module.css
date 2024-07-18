@@ -1,0 +1,21 @@
+.accounts-header-card {
+  display: flex;
+  gap: 15px;
+}
+
+.accounts-header-card__title {
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+.accounts-header-card__action {
+  margin-top: 0px !important;
+}
+
+@media (width > 600px) {
+  .accounts-header-card {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

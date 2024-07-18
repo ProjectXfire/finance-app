@@ -1,7 +1,9 @@
+'use client';
+
 import type { Account } from '@/core/finance/models';
 import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { insertAccountSchema } from '@/core/finance/schemas';
 import styles from './Form.module.css';
 import {
@@ -63,8 +65,8 @@ function EditAccountForm({ account }: Props): JSX.Element {
           <Button name='update-account' type='submit'>
             Save changes
           </Button>
-          <Button name='update-account' type='button' onClick={handleDelete}>
-            <Trash /> Delete account
+          <Button name='update-account' variant='destructive' type='button' onClick={handleDelete}>
+            <Trash className='size-4 mr-2' /> Delete account
           </Button>
         </form>
       </Form>

@@ -1,10 +1,14 @@
 export { default as NavButton } from './buttons/NavButton';
 export { default as SideButton } from './buttons/SideButton';
+export { default as AccountsTableCard } from './cards/AccountsTableCard';
 export { default as DashboardContainer } from './containers/DashboardContainer';
 export { default as MainContainer } from './containers/MainContainer';
 export { default as AccountSheet } from './forms/AccountSheet';
+export { default as EditAccountForm } from './forms/EditAccountForm';
 export { default as NewAccountForm } from './forms/NewAccountForm';
 export { default as MainHeader } from './headers/MainHeader';
 export { default as SidebarMenu } from './menu/SidebarMenu';
 export { default as Navigation } from './navigation/Navigation';
+export { default as AccountColumns } from './tables/AccountColumns';
+export { default as ActionCell } from './tables/ActionCell';
 export { default as WelcomeMsg } from './welcome-msg/WelcomeMsg';
