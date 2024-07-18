@@ -42,7 +42,7 @@ const app = new Hono()
         const account = fromDbToAccount(data);
         return c.json({ data: account }, 200);
       } catch (error) {
-        return c.json({ error: 'Internal error server' }, 500);
+        return c.json({ error: 'Error on create an account' }, 500);
       }
     }
   );

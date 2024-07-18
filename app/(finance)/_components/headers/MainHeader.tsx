@@ -8,22 +8,24 @@ function MainHeader(): JSX.Element {
   return (
     <header className={styles['main-header']}>
       <div className={styles['main-header__content']}>
-        <SidebarMenu />
-        <div className={styles['main-header__navigation']}>
-          <Logo />
-          <Navigation />
+        <div className={styles['main-header__navbar']}>
+          <SidebarMenu />
+          <div className={styles['main-header__navigation']}>
+            <Logo />
+            <Navigation />
+          </div>
+          <div className={styles['main-header__actions']}>
+            <ToggleTheme />
+            <ClerkLoaded>
+              <UserButton afterSwitchSessionUrl='/sign-in' />
+            </ClerkLoaded>
+            <ClerkLoading>
+              <Loader2 className='size-8 animate-spin' />
+            </ClerkLoading>
+          </div>
         </div>
-        <div className={styles['main-header__actions']}>
-          <ToggleTheme />
-          <ClerkLoaded>
-            <UserButton afterSwitchSessionUrl='/sign-in' />
-          </ClerkLoaded>
-          <ClerkLoading>
-            <Loader2 className='size-8 animate-spin' />
-          </ClerkLoading>
-        </div>
+        <WelcomeMsg />
       </div>
-      <WelcomeMsg />
     </header>
   );
 }
