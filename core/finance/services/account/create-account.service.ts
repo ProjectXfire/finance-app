@@ -1,18 +1,18 @@
-import type { Account } from '../models';
-import type { UpdateAccountDto } from '../dtos';
+import type { Account } from '../../models';
+import type { CreateAccountDto } from '../../dtos';
 import { toast } from 'sonner';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { client } from '@/shared/interfaces';
 
-export function useUpdateAccount(id: string) {
+export function useCreateAccount() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: async (payload: UpdateAccountDto) => {
-      const account = await updateAccount(id, payload);
+    mutationFn: async (payload: CreateAccountDto) => {
+      const account = await createAccount(payload);
       return account;
     },
     onSuccess: () => {
-      toast.success('Account updated');
+      toast.success('Account created');
       queryClient.invalidateQueries({ queryKey: ['accounts'] });
     },
     onError: (error) => {
@@ -22,8 +22,9 @@ export function useUpdateAccount(id: string) {
   return mutation;
 }
 
-async function updateAccount(id: string, payload: UpdateAccountDto): Promise<Account> {
-  const res = await client.api.accounts[':id']['$patch']({ param: { id }, json: payload });
+async function createAccount(payload: CreateAccountDto): Promise<Account> {
+  const { name } = payload;
+  const res = await client.api.accounts.$post({ json: { name } });
   if (!res.ok) {
     const { error } = await res.json();
     if (error) throw new Error(error);

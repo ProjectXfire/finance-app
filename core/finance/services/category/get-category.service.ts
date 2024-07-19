@@ -1,18 +1,18 @@
-import type { Account } from '../models';
+import type { Category } from '../../models';
 import { useQuery } from '@tanstack/react-query';
 import { client } from '@/shared/interfaces';
 
-export function useGetAccount(id: string) {
+export function useGetCategory(id: string) {
   const query = useQuery({
     enabled: !!id,
-    queryKey: ['account', { id }],
-    queryFn: () => getAccount(id),
+    queryKey: ['category', { id }],
+    queryFn: () => getCategory(id),
   });
   return query;
 }
 
-async function getAccount(id: string): Promise<Account> {
-  const res = await client.api.accounts[':id']['$get']({ param: { id } });
+async function getCategory(id: string): Promise<Category> {
+  const res = await client.api.categories[':id']['$get']({ param: { id } });
   if (!res.ok) {
     const { error } = await res.json();
     if (error) throw new Error(error);

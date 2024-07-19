@@ -1,7 +1,7 @@
 'use client';
 
-import type { Account } from '@/core/finance/models';
-import { useAccountSheet } from '../../_states';
+import type { Category } from '@/core/finance/models';
+import { useFinanceSheet } from '../../_states';
 import { useCustomDialog } from '@/shared/states';
 import styles from './Menu.module.css';
 import {
@@ -14,27 +14,43 @@ import {
   DropdownMenuTrigger,
 } from '@/shared/components';
 import { Edit, EllipsisVertical, Trash } from 'lucide-react';
-import { ConfirmDelete, EditAccountForm } from '..';
+import { ConfirmDelete, EditCategoryForm } from '..';
+import { useDeleteCategories } from '@/core/finance/services';
 
 interface Props {
-  data: Account;
+  data: Category;
 }
 
-function MenuTable({ data }: Props): JSX.Element {
-  const open = useAccountSheet((s) => s.open);
-  const setComponent = useAccountSheet((s) => s.setComponent);
+function CategoryMenuRowTable({ data }: Props): JSX.Element {
+  const { mutate } = useDeleteCategories();
+
+  const open = useFinanceSheet((s) => s.open);
+  const setComponent = useFinanceSheet((s) => s.setComponent);
 
   const openDialog = useCustomDialog((s) => s.open);
   const setComponentDialog = useCustomDialog((s) => s.setComponent);
+  const closeDialog = useCustomDialog((s) => s.close);
+  const endLoadingDialog = useCustomDialog((s) => s.endLoading);
 
-  const onOpenAccountEditSheet = () => {
+  const onOpenCategotyEditSheet = () => {
     open();
-    setComponent(<EditAccountForm account={data} />);
+    setComponent(<EditCategoryForm category={data} />);
   };
 
   const onOpenDialog = () => {
     openDialog();
-    setComponentDialog(<ConfirmDelete ids={[data.id]} />);
+    setComponentDialog(
+      <ConfirmDelete
+        onDelete={() => {
+          mutate([data.id], {
+            onSettled: () => {
+              closeDialog();
+              endLoadingDialog();
+            },
+          });
+        }}
+      />
+    );
   };
 
   return (
@@ -45,7 +61,7 @@ function MenuTable({ data }: Props): JSX.Element {
       <DropdownMenuContent>
         <DropdownMenuLabel>{data.name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className='flex justify-between' onClick={onOpenAccountEditSheet}>
+        <DropdownMenuItem className='flex justify-between' onClick={onOpenCategotyEditSheet}>
           Edit <Edit className='size-4' />
         </DropdownMenuItem>
         <DropdownMenuSeparator />
@@ -58,4 +74,4 @@ function MenuTable({ data }: Props): JSX.Element {
     </DropdownMenu>
   );
 }
-export default MenuTable;
+export default CategoryMenuRowTable;

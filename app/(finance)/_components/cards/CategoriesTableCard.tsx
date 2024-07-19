@@ -2,8 +2,7 @@
 
 import type { Account } from '@/core/finance/models';
 import { useFinanceSheet } from '../../_states';
-import { useDeleteAccounts, useGetAccounts } from '@/core/finance/services';
-import { useCustomDialog } from '@/shared/states';
+import { useDeleteAccounts, useDeleteCategories, useGetCategories } from '@/core/finance/services';
 import styles from './Card.module.css';
 import { Plus, TriangleAlert } from 'lucide-react';
 import {
@@ -16,22 +15,23 @@ import {
   CustomTable,
   TableLoader,
 } from '@/shared/components';
-import { AccountColumns, ConfirmDelete, NewAccountForm } from '..';
+import { CategoryColumns, ConfirmDelete, NewCategoryForm } from '..';
+import { useCustomDialog } from '@/shared/states';
 
-function AccountsTableCard(): JSX.Element {
-  const { mutate } = useDeleteAccounts();
-  const { data, isLoading, error } = useGetAccounts();
+function CategoriesTableCard(): JSX.Element {
+  const { mutate } = useDeleteCategories();
+  const { data, isLoading, error } = useGetCategories();
 
   const open = useFinanceSheet((s) => s.open);
   const setComponent = useFinanceSheet((s) => s.setComponent);
-  const setDialogComponet = useCustomDialog((s) => s.setComponent);
 
+  const setDialogComponet = useCustomDialog((s) => s.setComponent);
   const openDialog = useCustomDialog((s) => s.open);
   const closeDialog = useCustomDialog((s) => s.close);
   const endLoadingDialog = useCustomDialog((s) => s.endLoading);
 
   const onOpenNewAccountSheet = () => {
-    setComponent(<NewAccountForm />);
+    setComponent(<NewCategoryForm />);
     open();
   };
 
@@ -68,7 +68,7 @@ function AccountsTableCard(): JSX.Element {
   return (
     <Card className={styles['card']}>
       <CardHeader className={styles['header-card']}>
-        <CardTitle className={styles['header-card__title']}>Accounts</CardTitle>
+        <CardTitle className={styles['header-card__title']}>Categories</CardTitle>
         <Button
           className={styles['header-card__action']}
           name='new-account'
@@ -81,7 +81,7 @@ function AccountsTableCard(): JSX.Element {
       </CardHeader>
       <CardContent>
         <CustomTable
-          columns={AccountColumns}
+          columns={CategoryColumns}
           data={data ?? []}
           filterKey='name'
           onDeleteItems={onDeleteItems}
@@ -91,4 +91,4 @@ function AccountsTableCard(): JSX.Element {
     </Card>
   );
 }
-export default AccountsTableCard;
+export default CategoriesTableCard;

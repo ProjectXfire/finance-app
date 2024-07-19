@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-type AccountSheetState = {
+type FinanceSheetState = {
   isOpen: boolean;
   component: React.ReactNode;
   open: () => void;
@@ -8,7 +8,7 @@ type AccountSheetState = {
   setComponent: (component: React.ReactNode) => void;
 };
 
-export const useAccountSheet = create<AccountSheetState>((set) => ({
+export const useFinanceSheet = create<FinanceSheetState>((set) => ({
   isOpen: false,
   component: <></>,
   close: () => set({ isOpen: false }),

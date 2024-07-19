@@ -1,10 +1,10 @@
-import type { Account } from '@/core/finance/models';
+import type { Category } from '@/core/finance/models';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
 import { Button, Checkbox } from '@/shared/components';
-import { AccountMenuRowTable } from '..';
+import { CategoryMenuRowTable } from '..';
 
-export const AccountColumns: ColumnDef<Account>[] = [
+export const CategoryColumns: ColumnDef<Category>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -44,9 +44,9 @@ export const AccountColumns: ColumnDef<Account>[] = [
     accessorKey: 'actions',
     header: '',
     cell: ({ row }) => {
-      return <AccountMenuRowTable data={row.original} />;
+      return <CategoryMenuRowTable data={row.original} />;
     },
   },
 ];
 
-export default AccountColumns;
+export default CategoryColumns;

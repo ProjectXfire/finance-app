@@ -1,13 +1,13 @@
 'use client';
 
-import type { Account } from '@/core/finance/models';
+import type { Category } from '@/core/finance/models';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { useCustomDialog } from '@/shared/states';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { insertAccountSchema } from '@/core/finance/schemas';
+import { insertCategorySchema } from '@/core/finance/schemas';
 import { useFinanceSheet } from '../../_states';
-import { useDeleteAccounts, useUpdateAccount } from '@/core/finance/services';
+import { useDeleteCategories, useUpdateCategory } from '@/core/finance/services';
 import styles from './Form.module.css';
 import {
   Button,
@@ -25,18 +25,18 @@ import { Trash } from 'lucide-react';
 import { ConfirmDelete } from '..';
 
 interface Props {
-  account: Account;
+  category: Category;
 }
 
-const formSchema = insertAccountSchema.pick({ name: true });
+const formSchema = insertCategorySchema.pick({ name: true });
 
 type FormValues = z.input<typeof formSchema>;
 
-function EditAccountForm({ account }: Props): JSX.Element {
-  const { id, name } = account;
+function EditCategoryForm({ category }: Props): JSX.Element {
+  const { id, name } = category;
 
-  const { mutate: mutateDelete } = useDeleteAccounts();
-  const { mutate, isPending } = useUpdateAccount(id);
+  const { mutate: mutateDelete } = useDeleteCategories();
+  const { mutate, isPending } = useUpdateCategory(id);
 
   const closeAccountSheet = useFinanceSheet((s) => s.close);
   const setComponent = useCustomDialog((s) => s.setComponent);
@@ -78,8 +78,8 @@ function EditAccountForm({ account }: Props): JSX.Element {
   return (
     <>
       <SheetHeader>
-        <SheetTitle>Edit account</SheetTitle>
-        <SheetDescription>Edit your account to track your transactions</SheetDescription>
+        <SheetTitle>Edit category</SheetTitle>
+        <SheetDescription>Edit your category</SheetDescription>
       </SheetHeader>
       <Form {...form}>
         <form className={styles['form']} onSubmit={form.handleSubmit(handleSubmit)}>
@@ -109,11 +109,11 @@ function EditAccountForm({ account }: Props): JSX.Element {
             disabled={isPending}
             onClick={handleDelete}
           >
-            <Trash className='size-4 mr-2' /> Delete account
+            <Trash className='size-4 mr-2' /> Delete category
           </Button>
         </form>
       </Form>
     </>
   );
 }
-export default EditAccountForm;
+export default EditCategoryForm;

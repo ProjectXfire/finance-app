@@ -65,6 +65,7 @@
 /* Table loader */
 
 .table-loader {
+  margin-top: -80px;
   width: 100%;
 }
 

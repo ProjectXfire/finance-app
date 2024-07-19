@@ -1,29 +1,24 @@
 'use client';
 
-import { useDeleteAccounts } from '@/core/finance/services';
 import { Button, DialogDescription, DialogFooter, DialogTitle } from '@/shared/components';
 import { useCustomDialog } from '@/shared/states';
 
 interface Props {
-  ids: string[];
-  onCompleted?: () => void;
+  onDelete: () => void;
 }
 
-function ConfirmDelete({ ids, onCompleted }: Props): JSX.Element {
-  const { mutate, isPending } = useDeleteAccounts();
+function ConfirmDelete({ onDelete }: Props): JSX.Element {
   const close = useCustomDialog((s) => s.close);
+  const isLoading = useCustomDialog((s) => s.isLoading);
+  const startLoading = useCustomDialog((s) => s.startLoading);
+
+  const handleDelete = () => {
+    startLoading();
+    onDelete();
+  };
 
   const onClose = () => {
     close();
-  };
-
-  const onDelete = () => {
-    mutate(ids, {
-      onSuccess: () => {
-        close();
-        if (onCompleted) onCompleted();
-      },
-    });
   };
 
   return (
@@ -34,15 +29,15 @@ function ConfirmDelete({ ids, onCompleted }: Props): JSX.Element {
         from our servers.
       </DialogDescription>
       <DialogFooter className='pt-4'>
-        <Button variant='ghost' size='sm' type='submit' disabled={isPending} onClick={onClose}>
+        <Button variant='ghost' size='sm' type='submit' disabled={isLoading} onClick={onClose}>
           Cancel
         </Button>
         <Button
           variant='destructive'
           size='sm'
           type='submit'
-          disabled={isPending}
-          onClick={onDelete}
+          disabled={isLoading}
+          onClick={handleDelete}
         >
           Confirm
         </Button>
