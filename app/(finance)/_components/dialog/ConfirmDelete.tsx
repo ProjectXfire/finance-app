@@ -6,9 +6,10 @@ import { useCustomDialog } from '@/shared/states';
 
 interface Props {
   ids: string[];
+  onCompleted?: () => void;
 }
 
-function DeleteAccount({ ids }: Props): JSX.Element {
+function ConfirmDelete({ ids, onCompleted }: Props): JSX.Element {
   const { mutate, isPending } = useDeleteAccounts();
   const close = useCustomDialog((s) => s.close);
 
@@ -20,6 +21,7 @@ function DeleteAccount({ ids }: Props): JSX.Element {
     mutate(ids, {
       onSuccess: () => {
         close();
+        if (onCompleted) onCompleted();
       },
     });
   };
@@ -48,4 +50,4 @@ function DeleteAccount({ ids }: Props): JSX.Element {
     </>
   );
 }
-export default DeleteAccount;
+export default ConfirmDelete;

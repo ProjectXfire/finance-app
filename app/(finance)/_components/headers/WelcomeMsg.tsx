@@ -1,7 +1,7 @@
 'use client';
 
 import { useUser } from '@clerk/nextjs';
-import styles from './WelcomeMsg.module.css';
+import styles from './Header.module.css';
 
 function WelcomeMsg(): JSX.Element {
   const { user, isLoaded } = useUser();

@@ -1,23 +1,12 @@
-.sidebar-menu {
+.account-menu-delete {
+  width: 100%;
   display: flex;
+  justify-content: space-between;
+  background-color: white;
+  color: var(--error-color);
 }
 
-.sidebar-menu__trigger {
-  width: 35px;
-  height: 35px;
-  padding: 5px;
-  border: 1px solid var(--border-color);
-  border-radius: 50%;
-}
-
-@media (width > 800px) {
-  .sidebar-menu {
-    display: none;
-  }
-}
-
-.sidebar-menu__content {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
+.account-menu-delete:hover {
+  background-color: var(--error-color);
+  color: white;
 }

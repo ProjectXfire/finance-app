@@ -15,7 +15,7 @@ import {
   CustomTable,
   TableLoader,
 } from '@/shared/components';
-import { AccountColumns, DeleteAccount, NewAccountForm } from '..';
+import { AccountColumns, ConfirmDelete, NewAccountForm } from '..';
 import { useCustomDialog } from '@/shared/states';
 
 function AccountsTableCard(): JSX.Element {
@@ -32,7 +32,7 @@ function AccountsTableCard(): JSX.Element {
 
   const onDeleteItems = (data: Account[]) => {
     const ids = data.map((d) => d.id);
-    setDialogComponet(<DeleteAccount ids={ids} />);
+    setDialogComponet(<ConfirmDelete ids={ids} />);
     openDialog();
   };
 
@@ -50,7 +50,7 @@ function AccountsTableCard(): JSX.Element {
   }
 
   return (
-    <Card>
+    <Card className={styles['accounts-card']}>
       <CardHeader className={styles['accounts-header-card']}>
         <CardTitle className={styles['accounts-header-card__title']}>Accounts</CardTitle>
         <Button

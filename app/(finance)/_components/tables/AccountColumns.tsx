@@ -2,7 +2,7 @@ import type { Account } from '@/core/finance/models';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
 import { Button, Checkbox } from '@/shared/components';
-import ActionCell from './ActionCell';
+import { MenuTable } from '..';
 
 export const AccountColumns: ColumnDef<Account>[] = [
   {
@@ -44,7 +44,7 @@ export const AccountColumns: ColumnDef<Account>[] = [
     accessorKey: 'actions',
     header: '',
     cell: ({ row }) => {
-      return <ActionCell data={row.original} />;
+      return <MenuTable data={row.original} />;
     },
   },
 ];
