@@ -1,3 +1,7 @@
+.accounts-card {
+  margin-top: -80px;
+}
+
 .accounts-header-card {
   display: flex;
   gap: 15px;

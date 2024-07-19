@@ -2,3 +2,27 @@
   display: flex;
   gap: 10px;
 }
+
+.sidebar-navigation {
+  display: flex;
+}
+
+.sidebar-navigation__trigger {
+  width: 35px;
+  height: 35px;
+  padding: 5px;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+}
+
+@media (width > 800px) {
+  .sidebar-navigation {
+    display: none;
+  }
+}
+
+.sidebar-navigation__content {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}

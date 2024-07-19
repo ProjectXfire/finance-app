@@ -23,6 +23,28 @@ const app = new Hono()
       return c.json({ error: 'Internal error server' }, 500);
     }
   })
+  .get(
+    '/:id',
+    clerkMiddleware(),
+    zValidator('param', z.object({ id: z.string().optional() })),
+    async (c) => {
+      try {
+        const { id } = c.req.valid('param');
+        if (!id) return c.json({ error: 'Missing Id' }, 400);
+        const auth = getAuth(c);
+        if (!auth?.userId) return c.json({ error: 'Unauthorized' }, 401);
+        const data = await db
+          .select({ id: accounts.id, name: accounts.name })
+          .from(accounts)
+          .where(and(eq(accounts.userId, auth.userId), eq(accounts.id, id)));
+        if (data.length === 0) return c.json({ error: 'Not found' }, 400);
+        const account = fromDbToAccount(data[0]);
+        return c.json({ data: account }, 200);
+      } catch (error) {
+        return c.json({ error: 'Error on get account' }, 500);
+      }
+    }
+  )
   .post(
     '/',
     clerkMiddleware(),
@@ -47,6 +69,31 @@ const app = new Hono()
       }
     }
   )
+  .patch(
+    '/:id',
+    clerkMiddleware(),
+    zValidator('param', z.object({ id: z.string().optional() })),
+    zValidator('json', insertAccountSchema.pick({ name: true })),
+    async (c) => {
+      try {
+        const { id } = c.req.valid('param');
+        if (!id) return c.json({ error: 'Missing Id' }, 400);
+        const auth = getAuth(c);
+        if (!auth?.userId) return c.json({ error: 'Unauthorized' }, 401);
+        const values = c.req.valid('json');
+        const data = await db
+          .update(accounts)
+          .set(values)
+          .where(and(eq(accounts.userId, auth.userId), eq(accounts.id, id)))
+          .returning();
+        if (data.length === 0) return c.json({ error: 'Not found' }, 400);
+        const account = fromDbToAccount(data[0]);
+        return c.json({ data: account }, 200);
+      } catch (error) {
+        return c.json({ error: 'Error on update account' }, 500);
+      }
+    }
+  )
   .post(
     '/bulk-delete',
     clerkMiddleware(),
@@ -62,7 +109,7 @@ const app = new Hono()
           .returning({ id: accounts.id });
         return c.json({ data: [] }, 200);
       } catch (error) {
-        return c.json({ error: 'Error delete accounts' }, 500);
+        return c.json({ error: 'Error delete account(s)' }, 500);
       }
     }
   );

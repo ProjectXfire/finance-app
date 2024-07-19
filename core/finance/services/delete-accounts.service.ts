@@ -7,9 +7,10 @@ export function useDeleteAccounts() {
   const mutation = useMutation({
     mutationFn: async (payload: string[]) => {
       await deleteAccounts(payload);
+      return payload.length;
     },
-    onSuccess: () => {
-      toast.success('Accounts deleted');
+    onSuccess: (data) => {
+      toast.success(data > 1 ? 'Accounts deleted' : 'Account deleted');
       queryClient.invalidateQueries({ queryKey: ['accounts'] });
     },
     onError: (error) => {

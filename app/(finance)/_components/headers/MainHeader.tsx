@@ -1,7 +1,7 @@
 import styles from './Header.module.css';
 import { Logo, ToggleTheme } from '@/shared/components';
 import { Loader2 } from 'lucide-react';
-import { Navigation, SidebarMenu, WelcomeMsg } from '..';
+import { Navigation, SidebarNavigation, WelcomeMsg } from '..';
 import { ClerkLoaded, ClerkLoading, UserButton } from '@clerk/nextjs';
 
 function MainHeader(): JSX.Element {
@@ -9,7 +9,7 @@ function MainHeader(): JSX.Element {
     <header className={styles['main-header']}>
       <div className={styles['main-header__content']}>
         <div className={styles['main-header__navbar']}>
-          <SidebarMenu />
+          <SidebarNavigation />
           <div className={styles['main-header__navigation']}>
             <Logo />
             <Navigation />
