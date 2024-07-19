@@ -71,7 +71,7 @@ function CustomTable<TData, TValue>({
     <div>
       <div className='flex items-center gap-4 flex-wrap justify-between py-4'>
         <Input
-          placeholder='Filter accounts...'
+          placeholder='Filter name...'
           value={(table.getColumn(filterKey)?.getFilterValue() as string) ?? ''}
           onChange={(event) => table.getColumn(filterKey)?.setFilterValue(event.target.value)}
           className='max-w-sm'

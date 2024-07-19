@@ -1,19 +1,19 @@
-import type { Account } from '../models';
-import type { CreateAccountDto } from '../dtos';
+import type { Category } from '../../models';
+import type { CreateCategoryDto } from '../../dtos';
 import { toast } from 'sonner';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { client } from '@/shared/interfaces';
 
-export function useCreateAccount() {
+export function useCreateCategory() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: async (payload: CreateAccountDto) => {
-      const account = await createAccount(payload);
-      return account;
+    mutationFn: async (payload: CreateCategoryDto) => {
+      const category = await createCategory(payload);
+      return category;
     },
     onSuccess: () => {
-      toast.success('Account created');
-      queryClient.invalidateQueries({ queryKey: ['accounts'] });
+      toast.success('Category created');
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
     },
     onError: (error) => {
       toast.success(error.message);
@@ -22,9 +22,9 @@ export function useCreateAccount() {
   return mutation;
 }
 
-async function createAccount(payload: CreateAccountDto): Promise<Account> {
+async function createCategory(payload: CreateCategoryDto): Promise<Category> {
   const { name } = payload;
-  const res = await client.api.accounts.$post({ json: { name } });
+  const res = await client.api.categories.$post({ json: { name } });
   if (!res.ok) {
     const { error } = await res.json();
     if (error) throw new Error(error);

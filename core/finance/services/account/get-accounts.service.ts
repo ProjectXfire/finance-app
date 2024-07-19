@@ -1,4 +1,4 @@
-import type { Account } from '../models';
+import type { Account } from '../../models';
 import { useQuery } from '@tanstack/react-query';
 import { client } from '@/shared/interfaces';
 

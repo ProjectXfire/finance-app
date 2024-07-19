@@ -3,8 +3,8 @@
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { insertAccountSchema } from '@/core/finance/schemas';
-import { useCreateAccount } from '@/core/finance/services';
+import { insertCategorySchema } from '@/core/finance/schemas';
+import { useCreateCategory } from '@/core/finance/services';
 import styles from './Form.module.css';
 import {
   SheetDescription,
@@ -20,12 +20,12 @@ import {
 } from '@/shared/components';
 import { useFinanceSheet } from '../../_states';
 
-const formSchema = insertAccountSchema.pick({ name: true });
+const formSchema = insertCategorySchema.pick({ name: true });
 
 type FormValues = z.input<typeof formSchema>;
 
-function NewAccountForm(): JSX.Element {
-  const { mutate, isPending } = useCreateAccount();
+function NewCategoryForm(): JSX.Element {
+  const { mutate, isPending } = useCreateCategory();
   const close = useFinanceSheet((s) => s.close);
 
   const form = useForm<FormValues>({
@@ -44,8 +44,8 @@ function NewAccountForm(): JSX.Element {
   return (
     <>
       <SheetHeader>
-        <SheetTitle>New account</SheetTitle>
-        <SheetDescription>Create a new account to track your transactions</SheetDescription>
+        <SheetTitle>New category</SheetTitle>
+        <SheetDescription>Create a new category</SheetDescription>
       </SheetHeader>
       <Form {...form}>
         <form className={styles['form']} onSubmit={form.handleSubmit(handleSubmit)}>
@@ -56,21 +56,17 @@ function NewAccountForm(): JSX.Element {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input
-                    {...field}
-                    placeholder='e.g Cash, Bank, Credit Card'
-                    disabled={isPending}
-                  />
+                  <Input {...field} placeholder='e.g Food, Travel, etc.' disabled={isPending} />
                 </FormControl>
               </FormItem>
             )}
           />
-          <Button name='create-account' type='submit' disabled={isPending}>
-            Create account
+          <Button name='create-category' type='submit' disabled={isPending}>
+            Create category
           </Button>
         </form>
       </Form>
     </>
   );
 }
-export default NewAccountForm;
+export default NewCategoryForm;

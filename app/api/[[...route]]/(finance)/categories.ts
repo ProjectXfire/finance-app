@@ -5,8 +5,8 @@ import { zValidator } from '@hono/zod-validator';
 import { clerkMiddleware, getAuth } from '@hono/clerk-auth';
 import { db } from '@/core/drizzle';
 import { and, eq, inArray } from 'drizzle-orm';
-import { fromDbToAccount } from '@/core/finance/mappers';
-import { accounts, insertAccountSchema } from '@/core/finance/schemas';
+import { fromDbToCategory } from '@/core/finance/mappers';
+import { categories, insertCategorySchema } from '@/core/finance/schemas';
 
 const app = new Hono()
   .get('/', clerkMiddleware(), async (c) => {
@@ -14,11 +14,11 @@ const app = new Hono()
       const auth = getAuth(c);
       if (!auth?.userId) return c.json({ error: 'Unauthorized' }, 401);
       const data = await db
-        .select({ id: accounts.id, name: accounts.name })
-        .from(accounts)
-        .where(eq(accounts.userId, auth.userId));
-      const accountsMapper = data.map((a) => fromDbToAccount(a));
-      return c.json({ data: accountsMapper }, 200);
+        .select({ id: categories.id, name: categories.name })
+        .from(categories)
+        .where(eq(categories.userId, auth.userId));
+      const categoriesMapper = data.map((a) => fromDbToCategory(a));
+      return c.json({ data: categoriesMapper }, 200);
     } catch (error) {
       return c.json({ error: 'Internal error server' }, 500);
     }
@@ -34,12 +34,12 @@ const app = new Hono()
         const auth = getAuth(c);
         if (!auth?.userId) return c.json({ error: 'Unauthorized' }, 401);
         const data = await db
-          .select({ id: accounts.id, name: accounts.name })
-          .from(accounts)
-          .where(and(eq(accounts.userId, auth.userId), eq(accounts.id, id)));
+          .select({ id: categories.id, name: categories.name })
+          .from(categories)
+          .where(and(eq(categories.userId, auth.userId), eq(categories.id, id)));
         if (data.length === 0) return c.json({ error: 'Not found' }, 400);
-        const accountMapper = fromDbToAccount(data[0]);
-        return c.json({ data: accountMapper }, 200);
+        const category = fromDbToCategory(data[0]);
+        return c.json({ data: category }, 200);
       } catch (error) {
         return c.json({ error: 'Error on get account' }, 500);
       }
@@ -48,22 +48,22 @@ const app = new Hono()
   .post(
     '/',
     clerkMiddleware(),
-    zValidator('json', insertAccountSchema.pick({ name: true })),
+    zValidator('json', insertCategorySchema.pick({ name: true })),
     async (c) => {
       try {
         const auth = getAuth(c);
         if (!auth?.userId) return c.json({ error: 'Unauthorized' }, 401);
         const values = c.req.valid('json');
         const [data] = await db
-          .insert(accounts)
+          .insert(categories)
           .values({
             id: createId(),
             userId: auth.userId,
             ...values,
           })
           .returning();
-        const accountMapper = fromDbToAccount(data);
-        return c.json({ data: accountMapper }, 200);
+        const categoryMapper = fromDbToCategory(data);
+        return c.json({ data: categoryMapper }, 200);
       } catch (error) {
         return c.json({ error: 'Error on create an account' }, 500);
       }
@@ -73,7 +73,7 @@ const app = new Hono()
     '/:id',
     clerkMiddleware(),
     zValidator('param', z.object({ id: z.string().optional() })),
-    zValidator('json', insertAccountSchema.pick({ name: true })),
+    zValidator('json', insertCategorySchema.pick({ name: true })),
     async (c) => {
       try {
         const { id } = c.req.valid('param');
@@ -82,13 +82,13 @@ const app = new Hono()
         if (!auth?.userId) return c.json({ error: 'Unauthorized' }, 401);
         const values = c.req.valid('json');
         const data = await db
-          .update(accounts)
+          .update(categories)
           .set(values)
-          .where(and(eq(accounts.userId, auth.userId), eq(accounts.id, id)))
+          .where(and(eq(categories.userId, auth.userId), eq(categories.id, id)))
           .returning();
         if (data.length === 0) return c.json({ error: 'Not found' }, 400);
-        const accountMapper = fromDbToAccount(data[0]);
-        return c.json({ data: accountMapper }, 200);
+        const categoryMapper = fromDbToCategory(data[0]);
+        return c.json({ data: categoryMapper }, 200);
       } catch (error) {
         return c.json({ error: 'Error on update account' }, 500);
       }
@@ -104,9 +104,9 @@ const app = new Hono()
         if (!auth?.userId) return c.json({ error: 'Unauthorized' }, 401);
         const values = c.req.valid('json');
         await db
-          .delete(accounts)
-          .where(and(eq(accounts.userId, auth.userId), inArray(accounts.id, values.ids)))
-          .returning({ id: accounts.id });
+          .delete(categories)
+          .where(and(eq(categories.userId, auth.userId), inArray(categories.id, values.ids)))
+          .returning({ id: categories.id });
         return c.json({ data: [] }, 200);
       } catch (error) {
         return c.json({ error: 'Error delete account(s)' }, 500);
