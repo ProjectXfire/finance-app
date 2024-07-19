@@ -1,8 +1,7 @@
 import type { Account } from '@/core/finance/models';
 import { ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown, Edit } from 'lucide-react';
+import { ArrowUpDown } from 'lucide-react';
 import { Button, Checkbox } from '@/shared/components';
-import { useAccountSheet } from '../../_states';
 import ActionCell from './ActionCell';
 
 export const AccountColumns: ColumnDef<Account>[] = [
@@ -26,20 +25,6 @@ export const AccountColumns: ColumnDef<Account>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
-  },
-  {
-    accessorKey: 'id',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Id
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      );
-    },
   },
   {
     accessorKey: 'name',

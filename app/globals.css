@@ -7,6 +7,7 @@
     --background: 222, 0%, 94%, 1; /* changed */
     --foreground: 240, 59%, 19%; /* changed */
     --text-color: rgb(10, 32, 65);
+    --loader: rgba(128, 144, 172, 0.5);
     --bg-gradient: linear-gradient(180deg, rgba(30, 118, 209, 1) 10%, rgba(240, 240, 240, 1) 100%);
     --border-color: rgb(15, 29, 58);
     --button-hover: rgba(138, 153, 178, 0.3);
@@ -41,6 +42,7 @@
     --background: 227, 91%, 5%, 1; /* changed */
     --foreground: 238, 29%, 70%; /* changed */
     --text-color: rgb(73, 112, 170);
+    --loader: rgba(128, 144, 172, 0.5);
     --bg-gradient: linear-gradient(180deg, rgba(30, 118, 209, 1) 0%, rgba(1, 7, 24, 1) 100%);
     --border-color: rgb(121, 141, 185);
     --button-hover: rgba(29, 40, 57, 1);

@@ -12,6 +12,11 @@
   margin-top: 0px !important;
 }
 
+.accounts-header-card__loader {
+  display: flex;
+  justify-content: center;
+}
+
 @media (width > 600px) {
   .accounts-header-card {
     flex-direction: row;
