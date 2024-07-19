@@ -64,6 +64,7 @@ function CustomTable<TData, TValue>({
   const onDelete = (data: RowModel<TData>) => {
     const returnData = data.rows.map((d) => d.original);
     onDeleteItems(returnData);
+    table.resetRowSelection();
   };
 
   return (

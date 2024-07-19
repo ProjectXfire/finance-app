@@ -3,6 +3,7 @@ export { default as SideButton } from './buttons/SideButton';
 export { default as AccountsTableCard } from './cards/AccountsTableCard';
 export { default as DashboardContainer } from './containers/DashboardContainer';
 export { default as MainContainer } from './containers/MainContainer';
+export { default as DeleteAccount } from './dialog/DeleteAccount';
 export { default as AccountSheet } from './forms/AccountSheet';
 export { default as EditAccountForm } from './forms/EditAccountForm';
 export { default as NewAccountForm } from './forms/NewAccountForm';
