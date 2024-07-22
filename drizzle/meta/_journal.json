@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1721145038998,
-      "tag": "0000_demonic_network",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1721147903469,
-      "tag": "0001_remarkable_songbird",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1721419100630,
-      "tag": "0002_lumpy_christian_walker",
+      "when": 1721663564479,
+      "tag": "0000_little_bruce_banner",
       "breakpoints": true
     }
   ]
