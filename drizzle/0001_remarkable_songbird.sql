@@ -1,1 +1,0 @@
-ALTER TABLE "fn_accounts" ADD COLUMN "plaid_id" text;
