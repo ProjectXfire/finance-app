@@ -2,6 +2,7 @@ import type { Transaction } from '../../models';
 import type { CreateTransactionDto } from '../../dtos';
 import { toast } from 'sonner';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { convertAmountToMiliunits } from '@/shared/utils';
 import { client } from '@/shared/interfaces';
 
 export function useCreateTransaction() {
@@ -23,7 +24,10 @@ export function useCreateTransaction() {
 }
 
 async function createTransaction(payload: CreateTransactionDto): Promise<Transaction> {
-  const res = await client.api.transactions.$post({ json: payload });
+  const amountConverted = convertAmountToMiliunits(payload.amount);
+  const res = await client.api.transactions.$post({
+    json: { ...payload, amount: amountConverted },
+  });
   if (!res.ok) {
     const { error } = await res.json();
     if (error) throw new Error(error);
