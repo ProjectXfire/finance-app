@@ -1,6 +1,6 @@
 import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
-import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
+import { createInsertSchema } from 'drizzle-zod';
 import { relations } from 'drizzle-orm';
 import { accounts } from './account.schema';
 import { categories } from './category.schema';
@@ -10,7 +10,7 @@ export const transactions = pgTable(TABLES['transactions'], {
   id: text('id').primaryKey(),
   amount: integer('amount').notNull(),
   payee: text('payee').notNull(),
-  notes: text('notes'),
+  notes: text('notes').notNull(),
   date: timestamp('data', { mode: 'date' }).notNull(),
   accountId: text('account_id')
     .references(() => accounts.id, { onDelete: 'cascade' })

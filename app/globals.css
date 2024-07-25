@@ -9,6 +9,7 @@
     --text-color: rgb(10, 32, 65);
     --loader: rgba(128, 144, 172, 0.5);
     --error-color: rgb(223, 58, 58);
+    --success-color: green;
     --bg-gradient: linear-gradient(180deg, rgba(30, 118, 209, 1) 10%, rgba(240, 240, 240, 1) 100%);
     --border-color: rgb(15, 29, 58);
     --button-hover: rgba(138, 153, 178, 0.3);
@@ -45,6 +46,7 @@
     --text-color: rgb(73, 112, 170);
     --loader: rgba(128, 144, 172, 0.5);
     --error-color: rgb(223, 58, 58);
+    --success-color: green;
     --bg-gradient: linear-gradient(180deg, rgba(30, 118, 209, 1) 0%, rgba(1, 7, 24, 1) 100%);
     --border-color: rgb(121, 141, 185);
     --button-hover: rgba(29, 40, 57, 1);

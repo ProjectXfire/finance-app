@@ -2,7 +2,8 @@
 
 import type { Account } from '@/core/finance/models';
 import { useFinanceSheet } from '../../_states';
-import { useDeleteAccounts, useDeleteCategories, useGetCategories } from '@/core/finance/services';
+import { useDeleteCategories, useGetCategories } from '@/core/finance/services';
+import { useCustomDialog } from '@/shared/states';
 import styles from './Card.module.css';
 import { Plus, TriangleAlert } from 'lucide-react';
 import {
@@ -16,7 +17,6 @@ import {
   TableLoader,
 } from '@/shared/components';
 import { CategoryColumns, ConfirmDelete, NewCategoryForm } from '..';
-import { useCustomDialog } from '@/shared/states';
 
 function CategoriesTableCard(): JSX.Element {
   const { mutate } = useDeleteCategories();

@@ -1,4 +1,6 @@
+import { TransactionsTableCard } from '../../_components';
+
 function TransactionsPage() {
-  return <div>TransactionsPage</div>;
+  return <TransactionsTableCard />;
 }
 export default TransactionsPage;
