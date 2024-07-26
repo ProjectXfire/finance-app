@@ -3,6 +3,7 @@ import type { UpdateTransactionDto } from '../../dtos';
 import { toast } from 'sonner';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { client } from '@/shared/interfaces';
+import { convertAmountToMiliunits } from '@/shared/utils';
 
 export function useUpdateTransaction(id: string) {
   const queryClient = useQueryClient();
@@ -24,7 +25,11 @@ export function useUpdateTransaction(id: string) {
 }
 
 async function updateTransaction(id: string, payload: UpdateTransactionDto): Promise<Transaction> {
-  const res = await client.api.transactions[':id']['$patch']({ param: { id }, json: payload });
+  const amountConverted = convertAmountToMiliunits(payload.amount);
+  const res = await client.api.transactions[':id']['$patch']({
+    param: { id },
+    json: { ...payload, amount: amountConverted },
+  });
   if (!res.ok) {
     const { error } = await res.json();
     if (error) throw new Error(error);

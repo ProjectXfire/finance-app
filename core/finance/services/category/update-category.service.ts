@@ -14,6 +14,7 @@ export function useUpdateCategory(id: string) {
     onSuccess: () => {
       toast.success('Category updated');
       queryClient.invalidateQueries({ queryKey: ['categories'] });
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
     },
     onError: (error) => {
       toast.success(error.message);

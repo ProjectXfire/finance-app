@@ -6,7 +6,7 @@ import { clerkMiddleware, getAuth } from '@hono/clerk-auth';
 import { db } from '@/core/drizzle';
 import { and, eq, inArray } from 'drizzle-orm';
 import { fromDbToAccount } from '@/core/finance/mappers';
-import { accounts, insertAccountSchema } from '@/core/finance/schemas';
+import { fn_accounts, insertAccountSchema } from '@/core/finance/schemas';
 
 const app = new Hono()
   .get('/', clerkMiddleware(), async (c) => {
@@ -14,9 +14,9 @@ const app = new Hono()
       const auth = getAuth(c);
       if (!auth?.userId) return c.json({ error: 'Unauthorized' }, 401);
       const data = await db
-        .select({ id: accounts.id, name: accounts.name })
-        .from(accounts)
-        .where(eq(accounts.userId, auth.userId));
+        .select({ id: fn_accounts.id, name: fn_accounts.name })
+        .from(fn_accounts)
+        .where(eq(fn_accounts.userId, auth.userId));
       const accountsMapper = data.map((a) => fromDbToAccount(a));
       return c.json({ data: accountsMapper }, 200);
     } catch (error) {
@@ -34,9 +34,9 @@ const app = new Hono()
         const auth = getAuth(c);
         if (!auth?.userId) return c.json({ error: 'Unauthorized' }, 401);
         const data = await db
-          .select({ id: accounts.id, name: accounts.name })
-          .from(accounts)
-          .where(and(eq(accounts.userId, auth.userId), eq(accounts.id, id)));
+          .select({ id: fn_accounts.id, name: fn_accounts.name })
+          .from(fn_accounts)
+          .where(and(eq(fn_accounts.userId, auth.userId), eq(fn_accounts.id, id)));
         if (data.length === 0) return c.json({ error: 'Not found' }, 400);
         const accountMapper = fromDbToAccount(data[0]);
         return c.json({ data: accountMapper }, 200);
@@ -55,7 +55,7 @@ const app = new Hono()
         if (!auth?.userId) return c.json({ error: 'Unauthorized' }, 401);
         const values = c.req.valid('json');
         const [data] = await db
-          .insert(accounts)
+          .insert(fn_accounts)
           .values({
             id: createId(),
             userId: auth.userId,
@@ -82,9 +82,9 @@ const app = new Hono()
         if (!auth?.userId) return c.json({ error: 'Unauthorized' }, 401);
         const values = c.req.valid('json');
         const data = await db
-          .update(accounts)
+          .update(fn_accounts)
           .set(values)
-          .where(and(eq(accounts.userId, auth.userId), eq(accounts.id, id)))
+          .where(and(eq(fn_accounts.userId, auth.userId), eq(fn_accounts.id, id)))
           .returning();
         if (data.length === 0) return c.json({ error: 'Not found' }, 400);
         const accountMapper = fromDbToAccount(data[0]);
@@ -104,9 +104,9 @@ const app = new Hono()
         if (!auth?.userId) return c.json({ error: 'Unauthorized' }, 401);
         const values = c.req.valid('json');
         await db
-          .delete(accounts)
-          .where(and(eq(accounts.userId, auth.userId), inArray(accounts.id, values.ids)))
-          .returning({ id: accounts.id });
+          .delete(fn_accounts)
+          .where(and(eq(fn_accounts.userId, auth.userId), inArray(fn_accounts.id, values.ids)))
+          .returning({ id: fn_accounts.id });
         return c.json({ data: [] }, 200);
       } catch (error) {
         return c.json({ error: 'Error delete account(s)' }, 500);

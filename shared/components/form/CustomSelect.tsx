@@ -12,11 +12,17 @@ interface Props {
   placeholder?: string;
   onChange: (value: string) => void;
   data: Data[];
+  defaultValue?: string | null;
 }
 
-function CustomSelect({ onChange, data, placeholder = 'Select an item...' }: Props): JSX.Element {
+function CustomSelect({
+  onChange,
+  data,
+  placeholder = 'Select an item...',
+  defaultValue,
+}: Props): JSX.Element {
   return (
-    <Select onValueChange={onChange}>
+    <Select onValueChange={onChange} defaultValue={defaultValue ?? ''}>
       <FormControl>
         <SelectTrigger>
           <SelectValue placeholder={placeholder} />
