@@ -1,5 +1,5 @@
 {
-  "id": "3a5c1b27-05fd-4121-8cc5-01d2f103924e",
+  "id": "f18c072d-582d-4de5-b4de-1f9f6d57241a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -98,7 +98,7 @@
           "name": "notes",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "data": {
           "name": "data",

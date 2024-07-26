@@ -1,9 +1,11 @@
 'use client';
 
-import type { Account } from '@/core/finance/models';
+import type { Transaction } from '@/core/finance/models';
+import { useDeleteTransactions } from '@/core/finance/services';
 import { useFinanceSheet } from '../../_states';
 import { useCustomDialog } from '@/shared/states';
 import styles from './Menu.module.css';
+import { Edit, EllipsisVertical, Trash } from 'lucide-react';
 import {
   Button,
   DropdownMenu,
@@ -13,16 +15,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/shared/components';
-import { Edit, EllipsisVertical, Trash } from 'lucide-react';
-import { ConfirmDelete, EditAccountForm } from '..';
-import { useDeleteAccounts } from '@/core/finance/services';
+import { ConfirmDelete, EditTransactionForm } from '..';
 
 interface Props {
-  data: Account;
+  data: Transaction;
 }
 
-function AccountMenuRowTable({ data }: Props): JSX.Element {
-  const { mutate } = useDeleteAccounts();
+function TransactionMenuRowTable({ data }: Props): JSX.Element {
+  const { mutate } = useDeleteTransactions();
 
   const open = useFinanceSheet((s) => s.open);
   const setComponent = useFinanceSheet((s) => s.setComponent);
@@ -32,12 +32,12 @@ function AccountMenuRowTable({ data }: Props): JSX.Element {
   const closeDialog = useCustomDialog((s) => s.close);
   const endLoadingDialog = useCustomDialog((s) => s.endLoading);
 
-  const onOpenAccountEditSheet = () => {
+  const onOpenCategotyEditSheet = () => {
     open();
-    setComponent(<EditAccountForm account={data} />);
+    setComponent(<EditTransactionForm data={data} />);
   };
 
-  const onDeleteAccount = () => {
+  const onOpenDialog = () => {
     openDialog();
     setComponentDialog(
       <ConfirmDelete
@@ -59,13 +59,13 @@ function AccountMenuRowTable({ data }: Props): JSX.Element {
         <EllipsisVertical className='size-5' />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>{data.name}</DropdownMenuLabel>
+        <DropdownMenuLabel>{data.account}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className='flex justify-between' onClick={onOpenAccountEditSheet}>
+        <DropdownMenuItem className='flex justify-between' onClick={onOpenCategotyEditSheet}>
           Edit <Edit className='size-4' />
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className='p-0' onClick={onDeleteAccount}>
+        <DropdownMenuItem className='p-0' onClick={onOpenDialog}>
           <Button size='sm' variant='secondary' className={styles['menu-delete']}>
             Delete <Trash className='size-4' />
           </Button>
@@ -74,4 +74,4 @@ function AccountMenuRowTable({ data }: Props): JSX.Element {
     </DropdownMenu>
   );
 }
-export default AccountMenuRowTable;
+export default TransactionMenuRowTable;

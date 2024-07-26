@@ -31,6 +31,7 @@ interface DataTableProps<TData, TValue> {
   filterKey: string;
   onDeleteItems: (data: any) => void;
   disabled: boolean;
+  filterPlaceholder?: string;
 }
 
 function CustomTable<TData, TValue>({
@@ -39,6 +40,7 @@ function CustomTable<TData, TValue>({
   filterKey,
   onDeleteItems,
   disabled,
+  filterPlaceholder = 'Filter name...',
 }: DataTableProps<TData, TValue>): JSX.Element {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -71,7 +73,7 @@ function CustomTable<TData, TValue>({
     <div>
       <div className='flex items-center gap-4 flex-wrap justify-between py-4'>
         <Input
-          placeholder='Filter name...'
+          placeholder={filterPlaceholder}
           value={(table.getColumn(filterKey)?.getFilterValue() as string) ?? ''}
           onChange={(event) => table.getColumn(filterKey)?.setFilterValue(event.target.value)}
           className='max-w-sm'

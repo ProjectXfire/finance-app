@@ -2,31 +2,33 @@ import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { z } from 'zod';
 import { createInsertSchema } from 'drizzle-zod';
 import { relations } from 'drizzle-orm';
-import { accounts } from './account.schema';
-import { categories } from './category.schema';
 import { TABLES } from '../constants';
+import { fn_accounts } from './account.schema';
+import { fn_categories } from './category.schema';
 
-export const transactions = pgTable(TABLES['transactions'], {
+export const fn_transactions = pgTable(TABLES['transactions'], {
   id: text('id').primaryKey(),
   amount: integer('amount').notNull(),
   payee: text('payee').notNull(),
   notes: text('notes').notNull(),
   date: timestamp('data', { mode: 'date' }).notNull(),
   accountId: text('account_id')
-    .references(() => accounts.id, { onDelete: 'cascade' })
+    .references(() => fn_accounts.id, { onDelete: 'cascade' })
     .notNull(),
-  categoryId: text('category_id').references(() => categories.id, { onDelete: 'set null' }),
+  categoryId: text('category_id').references(() => fn_categories.id, { onDelete: 'set null' }),
 });
 
-export const transactionsRelations = relations(transactions, ({ one }) => ({
-  [TABLES['accounts']]: one(accounts, {
-    fields: [transactions.accountId],
-    references: [accounts.id],
+export const transactionsRelations = relations(fn_transactions, ({ one }) => ({
+  account: one(fn_accounts, {
+    fields: [fn_transactions.accountId],
+    references: [fn_accounts.id],
   }),
-  [TABLES['categories']]: one(categories, {
-    fields: [transactions.categoryId],
-    references: [categories.id],
+  category: one(fn_categories, {
+    fields: [fn_transactions.categoryId],
+    references: [fn_categories.id],
   }),
 }));
 
-export const insertTransactionSchema = createInsertSchema(transactions, { date: z.coerce.date() });
+export const insertTransactionSchema = createInsertSchema(fn_transactions, {
+  date: z.coerce.date(),
+});

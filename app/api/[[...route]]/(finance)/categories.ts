@@ -6,7 +6,7 @@ import { clerkMiddleware, getAuth } from '@hono/clerk-auth';
 import { db } from '@/core/drizzle';
 import { and, eq, inArray } from 'drizzle-orm';
 import { fromDbToCategory } from '@/core/finance/mappers';
-import { categories, insertCategorySchema } from '@/core/finance/schemas';
+import { fn_categories, insertCategorySchema } from '@/core/finance/schemas';
 
 const app = new Hono()
   .get('/', clerkMiddleware(), async (c) => {
@@ -14,9 +14,9 @@ const app = new Hono()
       const auth = getAuth(c);
       if (!auth?.userId) return c.json({ error: 'Unauthorized' }, 401);
       const data = await db
-        .select({ id: categories.id, name: categories.name })
-        .from(categories)
-        .where(eq(categories.userId, auth.userId));
+        .select({ id: fn_categories.id, name: fn_categories.name })
+        .from(fn_categories)
+        .where(eq(fn_categories.userId, auth.userId));
       const categoriesMapper = data.map((a) => fromDbToCategory(a));
       return c.json({ data: categoriesMapper }, 200);
     } catch (error) {
@@ -34,9 +34,9 @@ const app = new Hono()
         const auth = getAuth(c);
         if (!auth?.userId) return c.json({ error: 'Unauthorized' }, 401);
         const data = await db
-          .select({ id: categories.id, name: categories.name })
-          .from(categories)
-          .where(and(eq(categories.userId, auth.userId), eq(categories.id, id)));
+          .select({ id: fn_categories.id, name: fn_categories.name })
+          .from(fn_categories)
+          .where(and(eq(fn_categories.userId, auth.userId), eq(fn_categories.id, id)));
         if (data.length === 0) return c.json({ error: 'Not found' }, 400);
         const category = fromDbToCategory(data[0]);
         return c.json({ data: category }, 200);
@@ -55,7 +55,7 @@ const app = new Hono()
         if (!auth?.userId) return c.json({ error: 'Unauthorized' }, 401);
         const values = c.req.valid('json');
         const [data] = await db
-          .insert(categories)
+          .insert(fn_categories)
           .values({
             id: createId(),
             userId: auth.userId,
@@ -82,9 +82,9 @@ const app = new Hono()
         if (!auth?.userId) return c.json({ error: 'Unauthorized' }, 401);
         const values = c.req.valid('json');
         const data = await db
-          .update(categories)
+          .update(fn_categories)
           .set(values)
-          .where(and(eq(categories.userId, auth.userId), eq(categories.id, id)))
+          .where(and(eq(fn_categories.userId, auth.userId), eq(fn_categories.id, id)))
           .returning();
         if (data.length === 0) return c.json({ error: 'Not found' }, 400);
         const categoryMapper = fromDbToCategory(data[0]);
@@ -104,9 +104,9 @@ const app = new Hono()
         if (!auth?.userId) return c.json({ error: 'Unauthorized' }, 401);
         const values = c.req.valid('json');
         await db
-          .delete(categories)
-          .where(and(eq(categories.userId, auth.userId), inArray(categories.id, values.ids)))
-          .returning({ id: categories.id });
+          .delete(fn_categories)
+          .where(and(eq(fn_categories.userId, auth.userId), inArray(fn_categories.id, values.ids)))
+          .returning({ id: fn_categories.id });
         return c.json({ data: [] }, 200);
       } catch (error) {
         return c.json({ error: 'Error delete account(s)' }, 500);

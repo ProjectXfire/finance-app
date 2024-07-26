@@ -1,0 +1,7 @@
+.cell {
+  padding: 5px;
+}
+
+.cell:hover {
+  color: var(--loader);
+}

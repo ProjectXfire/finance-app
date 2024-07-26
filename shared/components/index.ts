@@ -11,6 +11,7 @@ export { default as Providers } from './providers/Providers';
 export { default as QueryProvider } from './providers/QueryProvider';
 export { default as CustomTable } from './table/CustomTable';
 export * from './ui/Alert';
+export * from './ui/Badge';
 export * from './ui/Button';
 export * from './ui/Calendar';
 export * from './ui/Card';

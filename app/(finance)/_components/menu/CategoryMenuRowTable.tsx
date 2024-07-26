@@ -66,7 +66,7 @@ function CategoryMenuRowTable({ data }: Props): JSX.Element {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem className='p-0' onClick={onOpenDialog}>
-          <Button size='sm' variant='secondary' className={styles['account-menu-delete']}>
+          <Button size='sm' variant='secondary' className={styles['menu-delete']}>
             Delete <Trash className='size-4' />
           </Button>
         </DropdownMenuItem>

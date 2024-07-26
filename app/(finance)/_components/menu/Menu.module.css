@@ -1,4 +1,4 @@
-.account-menu-delete {
+.menu-delete {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -6,7 +6,7 @@
   color: var(--error-color);
 }
 
-.account-menu-delete:hover {
+.menu-delete:hover {
   background-color: var(--error-color);
   color: white;
 }

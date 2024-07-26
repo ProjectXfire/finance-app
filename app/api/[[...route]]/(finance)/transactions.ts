@@ -8,10 +8,10 @@ import { db } from '@/core/drizzle';
 import { and, desc, eq, gte, inArray, lte, sql } from 'drizzle-orm';
 import { fromDbToTransaction } from '@/core/finance/mappers';
 import {
-  accounts,
-  categories,
+  fn_accounts,
+  fn_categories,
   insertTransactionSchema,
-  transactions,
+  fn_transactions,
 } from '@/core/finance/schemas';
 
 const app = new Hono()
@@ -32,6 +32,29 @@ const app = new Hono()
         if (!auth?.userId) return c.json({ error: 'Unauthorized' }, 401);
 
         const { to, from, accountId } = c.req.valid('query');
+
+        if (!to && !from && !accountId) {
+          const data = await db
+            .select({
+              id: fn_transactions.id,
+              payee: fn_transactions.payee,
+              amount: fn_transactions.amount,
+              notes: fn_transactions.notes,
+              date: fn_transactions.date,
+              category: fn_categories.name,
+              categoryId: fn_transactions.categoryId,
+              account: fn_accounts.name,
+              accountId: fn_transactions.accountId,
+            })
+            .from(fn_transactions)
+            .innerJoin(fn_accounts, eq(fn_transactions.accountId, fn_accounts.id))
+            .leftJoin(fn_categories, eq(fn_transactions.categoryId, fn_categories.id))
+            .where(and(eq(fn_accounts.userId, auth.userId)))
+            .orderBy(desc(fn_transactions.date));
+          const transactionsMapper = data.map((a) => fromDbToTransaction(a));
+          return c.json({ data: transactionsMapper }, 200);
+        }
+
         if (!to || !from || !accountId) return c.json({ error: 'Missing params' }, 400);
 
         const startDate = parse(from, 'yyyy-MM-dd', new Date());
@@ -39,28 +62,28 @@ const app = new Hono()
 
         const data = await db
           .select({
-            id: transactions.id,
-            payee: transactions.payee,
-            amount: transactions.amount,
-            notes: transactions.notes,
-            data: transactions.date,
-            category: categories.name,
-            categoryId: transactions.categoryId,
-            account: accounts.name,
-            accountId: transactions.accountId,
+            id: fn_transactions.id,
+            payee: fn_transactions.payee,
+            amount: fn_transactions.amount,
+            notes: fn_transactions.notes,
+            date: fn_transactions.date,
+            category: fn_categories.name,
+            categoryId: fn_transactions.categoryId,
+            account: fn_accounts.name,
+            accountId: fn_transactions.accountId,
           })
-          .from(transactions)
-          .innerJoin(accounts, eq(transactions.accountId, accounts.id))
-          .leftJoin(categories, eq(transactions.categoryId, categories.id))
+          .from(fn_transactions)
+          .innerJoin(fn_accounts, eq(fn_transactions.accountId, fn_accounts.id))
+          .leftJoin(fn_categories, eq(fn_transactions.categoryId, fn_categories.id))
           .where(
             and(
-              eq(transactions.accountId, accountId),
-              eq(accounts.userId, auth.userId),
-              gte(transactions.date, startDate),
-              lte(transactions.date, endDate)
+              eq(fn_transactions.accountId, accountId),
+              eq(fn_accounts.userId, auth.userId),
+              gte(fn_transactions.date, startDate),
+              lte(fn_transactions.date, endDate)
             )
           )
-          .orderBy(desc(transactions.date));
+          .orderBy(desc(fn_transactions.date));
         const transactionsMapper = data.map((a) => fromDbToTransaction(a));
         return c.json({ data: transactionsMapper }, 200);
       } catch (error) {
@@ -80,19 +103,19 @@ const app = new Hono()
         if (!auth?.userId) return c.json({ error: 'Unauthorized' }, 401);
         const data = await db
           .select({
-            id: transactions.id,
-            payee: transactions.payee,
-            amount: transactions.amount,
-            notes: transactions.notes,
-            date: transactions.date,
-            category: categories.name,
-            categoryId: transactions.categoryId,
-            account: accounts.name,
-            accountId: transactions.accountId,
+            id: fn_transactions.id,
+            payee: fn_transactions.payee,
+            amount: fn_transactions.amount,
+            notes: fn_transactions.notes,
+            date: fn_transactions.date,
+            category: fn_categories.name,
+            categoryId: fn_transactions.categoryId,
+            account: fn_accounts.name,
+            accountId: fn_transactions.accountId,
           })
-          .from(transactions)
-          .innerJoin(accounts, eq(transactions.accountId, accounts.id))
-          .where(and(eq(transactions.id, id), eq(accounts.userId, auth.userId)));
+          .from(fn_transactions)
+          .innerJoin(fn_accounts, eq(fn_transactions.accountId, fn_accounts.id))
+          .where(and(eq(fn_transactions.id, id), eq(fn_accounts.userId, auth.userId)));
         if (data.length === 0) return c.json({ error: 'Not found' }, 400);
         const transaction = fromDbToTransaction(data[0]);
         return c.json({ data: transaction }, 200);
@@ -111,7 +134,7 @@ const app = new Hono()
         if (!auth?.userId) return c.json({ error: 'Unauthorized' }, 401);
         const values = c.req.valid('json');
         const [data] = await db
-          .insert(transactions)
+          .insert(fn_transactions)
           .values({
             id: createId(),
             ...values,
@@ -139,22 +162,23 @@ const app = new Hono()
 
         const transactionToUpdate = db.$with('transaction_to_update').as(
           db
-            .select({ id: transactions.id })
-            .from(transactions)
-            .innerJoin(accounts, eq(transactions.accountId, accounts.id))
-            .where(and(eq(accounts.userId, auth.userId), eq(transactions.id, id)))
+            .select({ id: fn_transactions.id })
+            .from(fn_transactions)
+            .innerJoin(fn_accounts, eq(fn_transactions.accountId, fn_accounts.id))
+            .where(and(eq(fn_accounts.userId, auth.userId), eq(fn_transactions.id, id)))
         );
 
         const data = await db
           .with(transactionToUpdate)
-          .update(transactions)
+          .update(fn_transactions)
           .set(values)
-          .where(inArray(transactions.id, sql`(select id from ${transactionToUpdate})`))
+          .where(inArray(fn_transactions.id, sql`(select id from ${transactionToUpdate})`))
           .returning();
         if (data.length === 0) return c.json({ error: 'Not found' }, 400);
         const categoryMapper = fromDbToTransaction(data[0]);
         return c.json({ data: categoryMapper }, 200);
       } catch (error) {
+        console.log(error);
         return c.json({ error: 'Error on update account' }, 500);
       }
     }
@@ -170,7 +194,7 @@ const app = new Hono()
         const values = c.req.valid('json');
         if (values.length === 0) return c.json({ error: 'Empty values' }, 400);
         const data = await db
-          .insert(transactions)
+          .insert(fn_transactions)
           .values(values.map((v) => ({ id: createId(), ...v })))
           .returning();
         const transactionsMapper = data.map((d) => fromDbToTransaction(d));
@@ -191,16 +215,18 @@ const app = new Hono()
         const values = c.req.valid('json');
         const transactionsToDelete = db.$with('transactions_to_delete').as(
           db
-            .select({ id: transactions.id })
-            .from(transactions)
-            .innerJoin(accounts, eq(transactions.accountId, accounts.id))
-            .where(and(inArray(transactions.id, values.ids), eq(accounts.userId, auth.userId)))
+            .select({ id: fn_transactions.id })
+            .from(fn_transactions)
+            .innerJoin(fn_accounts, eq(fn_transactions.accountId, fn_accounts.id))
+            .where(
+              and(inArray(fn_transactions.id, values.ids), eq(fn_accounts.userId, auth.userId))
+            )
         );
         const idsDeleted = await db
           .with(transactionsToDelete)
-          .delete(transactions)
-          .where(inArray(transactions.id, sql`(select id from ${transactionsToDelete})`))
-          .returning({ id: transactions.id });
+          .delete(fn_transactions)
+          .where(inArray(fn_transactions.id, sql`(select id from ${transactionsToDelete})`))
+          .returning({ id: fn_transactions.id });
 
         return c.json({ data: idsDeleted }, 200);
       } catch (error) {

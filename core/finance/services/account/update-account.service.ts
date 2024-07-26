@@ -14,6 +14,7 @@ export function useUpdateAccount(id: string) {
     onSuccess: () => {
       toast.success('Account updated');
       queryClient.invalidateQueries({ queryKey: ['accounts'] });
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
     },
     onError: (error) => {
       toast.success(error.message);
