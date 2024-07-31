@@ -12,6 +12,13 @@
   font-weight: bold;
 }
 
+.header-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .header-card__action {
   margin-top: 0px !important;
 }

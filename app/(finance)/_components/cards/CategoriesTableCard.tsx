@@ -84,7 +84,7 @@ function CategoriesTableCard(): JSX.Element {
           columns={CategoryColumns}
           data={data ?? []}
           filterKey='name'
-          onDeleteItems={onDeleteItems}
+          onSelectRow={onDeleteItems}
           disabled={false}
         />
       </CardContent>

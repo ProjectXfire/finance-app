@@ -12,6 +12,7 @@ export function useDeleteAccounts() {
     onSuccess: (data) => {
       toast.success(data > 1 ? 'Accounts deleted' : 'Account deleted');
       queryClient.invalidateQueries({ queryKey: ['accounts'] });
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
     },
     onError: (error) => {
       toast.success(error.message);

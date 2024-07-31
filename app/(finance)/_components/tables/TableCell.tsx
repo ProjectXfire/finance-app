@@ -6,9 +6,10 @@ import styles from './Table.module.css';
 interface Props {
   cellValue: string;
   component: React.ReactNode;
+  emptyCellMessage?: string;
 }
 
-function TableCell({ cellValue, component }: Props): JSX.Element {
+function TableCell({ cellValue, component, emptyCellMessage = '<empty>' }: Props): JSX.Element {
   const open = useFinanceSheet((s) => s.open);
   const setComponent = useFinanceSheet((s) => s.setComponent);
 
@@ -19,7 +20,7 @@ function TableCell({ cellValue, component }: Props): JSX.Element {
 
   return (
     <button className={styles.cell} type='button' name='cell' onClick={onClick}>
-      {cellValue ? cellValue : '<empty>'}
+      {cellValue ? cellValue : <span className='text-red-600'>{emptyCellMessage}</span>}
     </button>
   );
 }

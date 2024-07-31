@@ -1,8 +1,8 @@
 export interface CreateTransactionDto {
   amount: number;
   payee: string;
-  accountId: string;
   notes: string;
   date: Date;
+  accountId: string;
   categoryId?: string | null;
 }
