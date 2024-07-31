@@ -5,3 +5,7 @@
 .cell:hover {
   color: var(--loader);
 }
+
+.import-table-header {
+  background: hsl(var(--background));
+}

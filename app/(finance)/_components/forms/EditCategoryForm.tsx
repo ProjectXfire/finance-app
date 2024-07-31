@@ -36,7 +36,7 @@ function EditCategoryForm({ category }: Props): JSX.Element {
   const { id, name } = category;
 
   const { mutate: mutateDelete } = useDeleteCategories();
-  const { mutate, isPending } = useUpdateCategory(id);
+  const { mutate, isPending } = useUpdateCategory();
 
   const closeAccountSheet = useFinanceSheet((s) => s.close);
   const setComponent = useCustomDialog((s) => s.setComponent);
@@ -47,15 +47,18 @@ function EditCategoryForm({ category }: Props): JSX.Element {
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: { name },
+    defaultValues: { name: name ?? '' },
   });
 
   const handleSubmit = (values: FormValues) => {
-    mutate(values, {
-      onSuccess: () => {
-        closeAccountSheet();
-      },
-    });
+    mutate(
+      { ...values, id },
+      {
+        onSuccess: () => {
+          closeAccountSheet();
+        },
+      }
+    );
   };
 
   const handleDelete = () => {

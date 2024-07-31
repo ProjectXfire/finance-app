@@ -29,7 +29,7 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   filterKey: string;
-  onDeleteItems: (data: any) => void;
+  onSelectRow: (data: any) => void;
   disabled: boolean;
   filterPlaceholder?: string;
 }
@@ -38,7 +38,7 @@ function CustomTable<TData, TValue>({
   columns,
   data,
   filterKey,
-  onDeleteItems,
+  onSelectRow,
   disabled,
   filterPlaceholder = 'Filter name...',
 }: DataTableProps<TData, TValue>): JSX.Element {
@@ -63,9 +63,9 @@ function CustomTable<TData, TValue>({
     onRowSelectionChange: setRowSelection,
   });
 
-  const onDelete = (data: RowModel<TData>) => {
+  const seletingRow = (data: RowModel<TData>) => {
     const returnData = data.rows.map((d) => d.original);
-    onDeleteItems(returnData);
+    onSelectRow(returnData);
     table.resetRowSelection();
   };
 
@@ -84,7 +84,7 @@ function CustomTable<TData, TValue>({
             name='delete'
             type='button'
             disabled={disabled}
-            onClick={() => onDelete(table.getFilteredSelectedRowModel())}
+            onClick={() => seletingRow(table.getFilteredSelectedRowModel())}
           >
             <Trash className='size-4 mr-2' /> Delete (
             {table.getFilteredSelectedRowModel().rows.length})

@@ -1,6 +1,9 @@
 'use client';
 
+import type { ImportColum } from '../../_constants';
+import type { CSVImport } from '../../_interfaces';
 import type { Transaction } from '@/core/finance/models';
+import { useState } from 'react';
 import { useFinanceSheet } from '../../_states';
 import { useDeleteTransactions, useGetTransactions } from '@/core/finance/services';
 import { useCustomDialog } from '@/shared/states';
@@ -16,7 +19,21 @@ import {
   CustomTable,
   TableLoader,
 } from '@/shared/components';
-import { ConfirmDelete, NewTransactionForm, TransactionColumns } from '..';
+import {
+  ConfirmCreateTransactions,
+  ConfirmDelete,
+  ImportCard,
+  NewTransactionForm,
+  TransactionColumns,
+  UploadButton,
+} from '..';
+
+enum VARIANTS {
+  LIST = 'LIST',
+  IMPORT = 'IMPORT',
+}
+
+const INITIAL_IMPORT_RESPONSE: CSVImport = { data: [], errors: [], meta: [] };
 
 function TransactionsTableCard(): JSX.Element {
   const { mutate } = useDeleteTransactions();
@@ -25,10 +42,13 @@ function TransactionsTableCard(): JSX.Element {
   const setComponent = useFinanceSheet((s) => s.setComponent);
   const open = useFinanceSheet((s) => s.open);
 
-  const setDialogComponet = useCustomDialog((s) => s.setComponent);
+  const setDialogComponent = useCustomDialog((s) => s.setComponent);
   const openDialog = useCustomDialog((s) => s.open);
   const closeDialog = useCustomDialog((s) => s.close);
   const endLoadingDialog = useCustomDialog((s) => s.endLoading);
+
+  const [variant, setVariant] = useState<VARIANTS>(VARIANTS.LIST);
+  const [importResults, setImportResults] = useState<CSVImport>(INITIAL_IMPORT_RESPONSE);
 
   const onOpenNewAccountSheet = () => {
     setComponent(<NewTransactionForm />);
@@ -37,7 +57,7 @@ function TransactionsTableCard(): JSX.Element {
 
   const onDeleteItems = (data: Transaction[]) => {
     const ids = data.map((d) => d.id);
-    setDialogComponet(
+    setDialogComponent(
       <ConfirmDelete
         onDelete={() => {
           mutate(ids, {
@@ -50,6 +70,21 @@ function TransactionsTableCard(): JSX.Element {
       />
     );
     openDialog();
+  };
+
+  const onUploadCSV = (results: CSVImport) => {
+    setVariant(VARIANTS.IMPORT);
+    setImportResults(results);
+  };
+
+  const onCancelCSV = () => {
+    setVariant(VARIANTS.LIST);
+    setImportResults(INITIAL_IMPORT_RESPONSE);
+  };
+
+  const onSubmitImportFile = (data: ImportColum[]) => {
+    openDialog();
+    setDialogComponent(<ConfirmCreateTransactions importData={data} onEnd={onCancelCSV} />);
   };
 
   if (isLoading) return <TableLoader />;
@@ -65,26 +100,34 @@ function TransactionsTableCard(): JSX.Element {
     );
   }
 
+  if (variant === VARIANTS.IMPORT)
+    return (
+      <ImportCard results={importResults} onCancel={onCancelCSV} onSubmit={onSubmitImportFile} />
+    );
+
   return (
     <Card className={styles['card']}>
       <CardHeader className={styles['header-card']}>
         <CardTitle className={styles['header-card__title']}>Transactions</CardTitle>
-        <Button
-          className={styles['header-card__action']}
-          name='new-account'
-          type='button'
-          size='sm'
-          onClick={onOpenNewAccountSheet}
-        >
-          <Plus className='mr-2 size-4' /> Add new
-        </Button>
+        <div className={styles['header-card__actions']}>
+          <Button
+            className={styles['header-card__action']}
+            name='new-account'
+            type='button'
+            size='sm'
+            onClick={onOpenNewAccountSheet}
+          >
+            <Plus className='mr-2 size-4' /> Add new
+          </Button>
+          <UploadButton onUpload={onUploadCSV} />
+        </div>
       </CardHeader>
       <CardContent>
         <CustomTable
           columns={TransactionColumns}
           data={data ?? []}
           filterKey='account'
-          onDeleteItems={onDeleteItems}
+          onSelectRow={onDeleteItems}
           disabled={false}
           filterPlaceholder='Filter by account...'
         />

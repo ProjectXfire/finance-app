@@ -3,7 +3,13 @@ import { format } from 'date-fns';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
 import { Badge, Button, Checkbox } from '@/shared/components';
-import { EditAccountForm, EditCategoryForm, TableCell, TransactionMenuRowTable } from '..';
+import {
+  EditAccountForm,
+  EditCategoryForm,
+  EditCategorySelectForm,
+  TableCell,
+  TransactionMenuRowTable,
+} from '..';
 import { formatCurrency } from '@/shared/utils';
 
 export const TransactionColumns: ColumnDef<Transaction>[] = [
@@ -83,11 +89,25 @@ export const TransactionColumns: ColumnDef<Transaction>[] = [
       );
     },
     cell: ({ row }) => {
-      const { category, categoryId } = row.original;
+      const { id, category, account, ...rest } = row.original;
+      if (rest.categoryId)
+        return (
+          <TableCell
+            cellValue={category}
+            component={<EditCategoryForm category={{ id: rest.categoryId, name: category }} />}
+            emptyCellMessage='<Uncategorized>'
+          />
+        );
       return (
         <TableCell
           cellValue={category}
-          component={<EditCategoryForm category={{ id: categoryId, name: category }} />}
+          component={
+            <EditCategorySelectForm
+              transactionId={id}
+              transaction={{ ...rest, date: new Date(rest.date) }}
+            />
+          }
+          emptyCellMessage='<Uncategorized>'
         />
       );
     },

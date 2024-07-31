@@ -84,7 +84,7 @@ function AccountsTableCard(): JSX.Element {
           columns={AccountColumns}
           data={data ?? []}
           filterKey='name'
-          onDeleteItems={onDeleteItems}
+          onSelectRow={onDeleteItems}
           disabled={false}
         />
       </CardContent>
