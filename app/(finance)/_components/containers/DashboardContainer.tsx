@@ -1,22 +1,10 @@
-'use client';
+import styles from './Container.module.css';
 
-import { Button } from '@/shared/components';
-import { useFinanceSheet } from '../../_states';
-import { NewAccountForm } from '..';
+interface Props {
+  children: React.ReactNode;
+}
 
-function DashboardContainer(): JSX.Element {
-  const open = useFinanceSheet((s) => s.open);
-  const setComponent = useFinanceSheet((s) => s.setComponent);
-
-  const onOpenSheetForm = () => {
-    open();
-    setComponent(<NewAccountForm />);
-  };
-
-  return (
-    <section>
-      <Button onClick={onOpenSheetForm}>Add an account</Button>
-    </section>
-  );
+function DashboardContainer({ children }: Props): JSX.Element {
+  return <div className={styles['dashboard-container']}>{children}</div>;
 }
 export default DashboardContainer;

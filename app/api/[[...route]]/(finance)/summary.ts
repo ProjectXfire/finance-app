@@ -7,6 +7,7 @@ import { zValidator } from '@hono/zod-validator';
 import { differenceInDays, parse, subDays } from 'date-fns';
 import { fn_accounts, fn_categories, fn_transactions } from '@/core/finance/schemas';
 import { calculatePercentageChange, fillMissingDays } from '@/shared/utils';
+import { fromDbToSummary } from '@/core/finance/mappers';
 
 const app = new Hono().get(
   '/',
@@ -89,7 +90,7 @@ const app = new Hono().get(
               Number
             ),
           expenses:
-            sql`SUM(CASE WHEN ${fn_transactions.amount} < 0 THEN ${fn_transactions.amount} ELSE 0 END)`.mapWith(
+            sql`SUM(CASE WHEN ${fn_transactions.amount} < 0 THEN ABS(${fn_transactions.amount}) ELSE 0 END)`.mapWith(
               Number
             ),
         })
@@ -108,18 +109,23 @@ const app = new Hono().get(
 
       const days = fillMissingDays(activeDays, startDate, endDate);
 
-      return c.json({
-        currentPeriod: {
-          remainingAmount: currentPeriod.remaining,
-          remainingChange,
-          incomeAmount: currentPeriod.income,
-          incomeChange,
-          expensesAmount: currentPeriod.expenses,
-          expenseChange,
-        },
+      const summaryMapper = fromDbToSummary({
+        remainingAmount: currentPeriod.remaining,
+        remainingChange,
+        incomeAmount: currentPeriod.income,
+        incomeChange,
+        expensesAmount: currentPeriod.expenses,
+        expenseChange,
         days,
         categories,
       });
+
+      return c.json(
+        {
+          data: summaryMapper,
+        },
+        200
+      );
     } catch (error) {
       return c.json({ error: 'Internal error server' }, 500);
     }

@@ -8,6 +8,7 @@ export * from './category/delete-categories.service';
 export * from './category/get-categories.service';
 export * from './category/get-category.service';
 export * from './category/update-category.service';
+export * from './summary/get-summary.service';
 export * from './transaction/create-transaction.service';
 export * from './transaction/create-transactions.service';
 export * from './transaction/delete-transactions.service';

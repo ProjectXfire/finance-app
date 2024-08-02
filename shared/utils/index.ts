@@ -1,5 +1,6 @@
 export * from './calculate-percentage';
 export * from './convert-amount';
+export * from './format-date';
 export * from './missing-days';
-export * from './scv-to-object';
+export * from './random-color';
 export * from './utils';

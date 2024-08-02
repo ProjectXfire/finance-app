@@ -7,11 +7,13 @@
     --background: 222, 0%, 94%, 1; /* changed */
     --foreground: 240, 59%, 19%; /* changed */
     --text-color: rgb(10, 32, 65);
-    --loader: rgba(128, 144, 172, 0.5);
+    --pie-text-color: rgb(5, 17, 36);
+    --loader: rgba(174, 184, 201, 0.5);
     --error-color: rgb(223, 58, 58);
-    --success-color: green;
+    --success-color: rgb(40, 194, 40);
     --bg-gradient: linear-gradient(180deg, rgba(30, 118, 209, 1) 10%, rgba(240, 240, 240, 1) 100%);
     --border-color: rgb(15, 29, 58);
+    --border-card-color: rgba(15, 29, 58, 0.2);
     --button-hover: rgba(138, 153, 178, 0.3);
     --text-hover: rgb(226, 229, 238);
     --card: 0 0% 100%;
@@ -44,11 +46,13 @@
     --background: 227, 91%, 5%, 1; /* changed */
     --foreground: 238, 29%, 70%; /* changed */
     --text-color: rgb(73, 112, 170);
-    --loader: rgba(128, 144, 172, 0.5);
+    --pie-text-color: rgb(255, 255, 255);
+    --loader: rgba(174, 184, 201, 0.5);
     --error-color: rgb(223, 58, 58);
-    --success-color: green;
+    --success-color: rgb(40, 194, 40);
     --bg-gradient: linear-gradient(180deg, rgba(30, 118, 209, 1) 0%, rgba(1, 7, 24, 1) 100%);
     --border-color: rgb(121, 141, 185);
+    --border-card-color: rgba(121, 141, 185, 0.4);
     --button-hover: rgba(29, 40, 57, 1);
     --text-hover: rgb(226, 229, 238);
     --card: 222.2 84% 4.9%;

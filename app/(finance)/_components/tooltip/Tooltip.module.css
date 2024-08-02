@@ -1,0 +1,38 @@
+.custom-tooltip {
+  border: 1px solid var(--text-hover);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.custom-tooltip__date {
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  background-color: var(--loader);
+}
+
+.custom-tooltip__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--text-color);
+}
+
+.custom-tooltip__box-value {
+  padding: 2px 10px;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  gap: 10px;
+}
+
+.custom-tooltip__value {
+  font-weight: bold;
+}
+
+.custom-tooltip__value--plus {
+  color: var(--success-color);
+}
+
+.custom-tooltip__value--minus {
+  color: var(--error-color);
+}

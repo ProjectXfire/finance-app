@@ -1,0 +1,20 @@
+.data-grid {
+  margin-bottom: 10px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (width > 600px) {
+  .data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (width > 900px) {
+  .data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
