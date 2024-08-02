@@ -35,3 +35,62 @@
     align-items: center;
   }
 }
+
+.data-summary-card {
+  box-shadow: 0px 0px 1px 0px var(--border-card-color);
+}
+
+.data-summary-card__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.data-summary-card__title {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.data-summary-card__icon {
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 12rem;
+}
+
+.data-summary-card__value {
+  font-weight: bolder;
+  font-size: 1.5rem;
+}
+
+.data-summary-card__percentage {
+  font-size: 0.9rem;
+}
+
+.data-summary-card__percentage--plus {
+  color: var(--success-color);
+}
+
+.data-summary-card__percentage--minus {
+  color: var(--error-color);
+}
+
+.default {
+  color: rgb(31, 99, 224);
+  background-color: rgba(31, 99, 224, 0.2);
+}
+
+.success {
+  color: rgb(32, 170, 62);
+  background-color: rgba(32, 170, 62, 0.2);
+}
+
+.warning {
+  color: rgb(230, 161, 14);
+  background-color: rgba(230, 161, 14, 0.2);
+}
+
+.danger {
+  color: rgb(219, 63, 42);
+  background-color: rgba(219, 63, 42, 0.2);
+}

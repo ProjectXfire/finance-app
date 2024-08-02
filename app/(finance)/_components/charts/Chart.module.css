@@ -1,0 +1,12 @@
+.data-charts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (width > 600px) {
+  .data-charts {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+  }
+}

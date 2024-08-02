@@ -1,5 +1,10 @@
-import { DashboardContainer } from '../_components';
+import { DashboardContainer, DataCharts, DataGrid } from '../_components';
 
 export default function DashboardPage(): JSX.Element {
-  return <DashboardContainer />;
+  return (
+    <DashboardContainer>
+      <DataGrid />
+      <DataCharts />
+    </DashboardContainer>
+  );
 }
