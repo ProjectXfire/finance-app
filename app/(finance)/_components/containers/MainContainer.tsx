@@ -1,3 +1,4 @@
+import { Filter } from '..';
 import styles from './Container.module.css';
 
 interface Props {

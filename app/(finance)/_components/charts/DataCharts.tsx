@@ -33,4 +33,5 @@ function DataCharts(): JSX.Element {
     </section>
   );
 }
+
 export default DataCharts;

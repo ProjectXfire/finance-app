@@ -64,3 +64,8 @@
     font-weight: 500;
   }
 }
+
+.filters {
+  display: flex;
+  justify-content: flex-start;
+}
