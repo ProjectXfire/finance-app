@@ -1,0 +1,54 @@
+.filter {
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media (width > 600px) {
+  .filter {
+    flex-direction: row;
+    width: auto;
+  }
+}
+
+.filter-select {
+  height: 35px;
+  font-size: 0.8rem;
+  background-color: var(--select-color);
+  border: none;
+  color: white;
+}
+
+.date-filter {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.date-filter__popover {
+  width: 100%;
+  margin: 20px;
+}
+
+.date-filter__label {
+  font-size: 0.75rem;
+}
+
+.date-filter__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.date-filter__button {
+  width: 100%;
+}
+
+@media (width > 600px) {
+  .date-filter__actions {
+    flex-direction: row;
+  }
+}

@@ -13,16 +13,26 @@ interface Props {
   disabled?: boolean;
   error?: boolean;
   onBlur?: Noop;
+  className?: string;
+  mode?: any;
 }
 
-function DatePicker({ value, disabled, onChange, error, onBlur }: Props): JSX.Element {
+function DatePicker({
+  value,
+  disabled,
+  onChange,
+  error,
+  onBlur,
+  className,
+  mode = 'single',
+}: Props): JSX.Element {
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
           className={`${styles['button-date-picker']} ${
             error && styles['button-date-picker--error']
-          }`}
+          } ${className}`}
           type='button'
           variant='outline'
           onBlur={onBlur}
@@ -33,7 +43,7 @@ function DatePicker({ value, disabled, onChange, error, onBlur }: Props): JSX.El
       </PopoverTrigger>
       <PopoverContent>
         <Calendar
-          mode='single'
+          mode={mode}
           selected={value}
           disabled={disabled}
           onSelect={onChange}

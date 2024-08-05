@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { parse } from 'date-fns';
+import { parse, subDays } from 'date-fns';
 import { createId } from '@paralleldrive/cuid2';
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
@@ -33,32 +33,11 @@ const app = new Hono()
 
         const { to, from, accountId } = c.req.valid('query');
 
-        if (!to && !from && !accountId) {
-          const data = await db
-            .select({
-              id: fn_transactions.id,
-              payee: fn_transactions.payee,
-              amount: fn_transactions.amount,
-              notes: fn_transactions.notes,
-              date: fn_transactions.date,
-              category: fn_categories.name,
-              categoryId: fn_transactions.categoryId,
-              account: fn_accounts.name,
-              accountId: fn_transactions.accountId,
-            })
-            .from(fn_transactions)
-            .innerJoin(fn_accounts, eq(fn_transactions.accountId, fn_accounts.id))
-            .leftJoin(fn_categories, eq(fn_transactions.categoryId, fn_categories.id))
-            .where(and(eq(fn_accounts.userId, auth.userId)))
-            .orderBy(desc(fn_transactions.date));
-          const transactionsMapper = data.map((a) => fromDbToTransaction(a));
-          return c.json({ data: transactionsMapper }, 200);
-        }
+        const defaultTo = new Date();
+        const defaultFrom = subDays(defaultTo, 30);
 
-        if (!to || !from || !accountId) return c.json({ error: 'Missing params' }, 400);
-
-        const startDate = parse(from, 'yyyy-MM-dd', new Date());
-        const endDate = parse(to, 'yyyy-MM-dd', new Date());
+        const startDate = from ? parse(from, 'yyyy-MM-dd', new Date()) : defaultFrom;
+        const endDate = to ? parse(to, 'yyyy-MM-dd', new Date()) : defaultTo;
 
         const data = await db
           .select({
@@ -77,7 +56,7 @@ const app = new Hono()
           .leftJoin(fn_categories, eq(fn_transactions.categoryId, fn_categories.id))
           .where(
             and(
-              eq(fn_transactions.accountId, accountId),
+              accountId ? eq(fn_transactions.accountId, accountId) : undefined,
               eq(fn_accounts.userId, auth.userId),
               gte(fn_transactions.date, startDate),
               lte(fn_transactions.date, endDate)

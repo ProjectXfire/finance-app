@@ -1,7 +1,7 @@
 import styles from './Header.module.css';
 import { Logo, ToggleTheme } from '@/shared/components';
 import { Loader2 } from 'lucide-react';
-import { Navigation, SidebarNavigation, WelcomeMsg } from '..';
+import { Filter, Navigation, SidebarNavigation, WelcomeMsg } from '..';
 import { ClerkLoaded, ClerkLoading, UserButton } from '@clerk/nextjs';
 
 function MainHeader(): JSX.Element {
@@ -25,6 +25,9 @@ function MainHeader(): JSX.Element {
           </div>
         </div>
         <WelcomeMsg />
+        <div className={styles.filters}>
+          <Filter />
+        </div>
       </div>
     </header>
   );
